@@ -2,24 +2,29 @@ class SudokuSolver {
 
 
   validate(puzzleString) {
-    const regex = /[\d\.]/;
+    const regex = /[^\d\.]/g;
     const puzzleArray = Array.from(puzzleString);
     if(puzzleArray.length !== 81){
       return "not 81";
     }
     if(puzzleArray.some(elem => {
-      return !regex.test(elem);
+      return regex.test(elem);
     })){
       return "invalid characters";
     }
+    return 'ok';
 
   }
 
+
+
   checkRowPlacement(matrix, row, column, value) {
     
+    console.log('row test');
+    // console.log(matrix);
     for(let i = 0; i<9; i++){
       if(value === matrix[row][i]){
-          // console.log("found on the same row")
+          // console.log("found on the same row");
           return true;
       }
     }
@@ -28,10 +33,11 @@ class SudokuSolver {
 
   checkColPlacement(matrix, row, column, value) {
 
+    // console.log('col test');
     for(let i = 0; i < 9; i++){
       if(value === matrix[i][column]){
-              // console.log("found on the same column")
-          return true
+              // console.log("found on the same column");
+          return true;
       }
     }
     return false;
@@ -42,10 +48,11 @@ class SudokuSolver {
     const gRow = Math.floor(row / 3)*3;
     const gCol = Math.floor(column / 3)*3;
 
+    // console.log('region test');
     for(let i=gRow; i<gRow+3; i++){
         for(let j=gCol; j<gCol+3; j++){
             if(value === matrix[i][j]){
-                // console.log("found in the same group")
+                // console.log("found in the same group");
                 return true;
             }
         }
@@ -53,10 +60,46 @@ class SudokuSolver {
     return false;
   }
 
-  checkPlacement(row, col, value){
-    if(this.checkRowPlacement(matrix, row, col, value) === false && this.checkColPlacement(matrix, row, col, value) === false && this.checkRegionPlacement(matrix, row, col, value) === false){
-      
+  checkPlacement(puzzleString, cell, value){
+
+    let matrix = [
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+    ];
+
+    this.strToMatrix(puzzleString, matrix);
+  
+    const numRegex = /\d{1}/i;
+    const letterRegex = /\w{1}/i;
+    const colRaw = cell.match(numRegex);
+    const rowRaw = cell.match(letterRegex);
+
+    // console.log(rowRaw, colRaw);
+    const col = parseInt(colRaw[0]) - 1;
+    const row = rowRaw[0].charCodeAt(0) - 'A'.charCodeAt(0);
+
+    // console.log("row col", row, col)
+
+    const res = [0,0,0];  //-----[row, column, region]
+
+    if(this.checkRowPlacement(matrix, row, col, value) === true){
+      res[0] = 1;
     }
+    if(this.checkColPlacement(matrix, row, col, value) === true){
+      res[1] = 1
+    }
+    if(this.checkRegionPlacement(matrix, row, col, value) === true){
+      res[2] = 1;
+    }
+
+    return res;
   }
 
   strToMatrix(puzzleString, matrix){
@@ -105,6 +148,7 @@ class SudokuSolver {
 
       let count = 0;
       let num;
+      let prevEmptyCells = emptyCells;
       for(let i=0;i<9;i++){
         for(let j=0; j<9; j++){
           if(matrix[i][j] !== 0) continue;
@@ -123,6 +167,9 @@ class SudokuSolver {
               emptyCells--;
           }
         }
+      }
+      if(prevEmptyCells === emptyCells){
+        return 'impossible';
       }
     }
     let str = '';
