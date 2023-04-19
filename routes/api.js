@@ -9,8 +9,24 @@ module.exports = function (app) {
   app.post('/api/check', (req, res) => {
       const puzzleString = req.body.puzzle;
       const coord = req.body.coordinate;
-      const val = parseInt(req.body.value);
+      const rawVal = req.body.value;
+      const val = parseInt(rawVal);
 
+      if(solver.validateCoord(coord) === 'missing coord' || solver.validateValue(rawVal) === 'missing value' || solver.validate(puzzleString) === 'missing puzzle'){
+        return res.json({ "error": "Required field(s) missing" });
+      }
+      if(solver.validate(puzzleString) === 'not 81'){
+        return res.json({"error": "Expected puzzle to be 81 characters long"});
+      }
+      if(solver.validate(puzzleString) === 'invalid characters'){
+        return res.json({ "error": "Invalid characters in puzzle" });
+      }
+      if(solver.validateCoord(coord) === 'invalid coord'){
+        return res.json({ "error": "Invalid coordinate" });
+      }
+      if(solver.validateValue(rawVal) === 'invalid value'){
+        return res.json({ "error": "Invalid value" });
+      }
       const checkRes = solver.checkPlacement(puzzleString, coord, val);
       const jsonRes = {"valid": true}
 
@@ -36,11 +52,13 @@ module.exports = function (app) {
   app.post('/api/solve', (req, res) => {
 
     const puzzleString = req.body.puzzle;
-
+    if(solver.validate(puzzleString) === "missing puzzle"){
+      return res.json({ "error": "Required field(s) missing" });
+    }
     if(solver.validate(puzzleString) === 'not 81'){
       return res.json({"error": "Expected puzzle to be 81 characters long"});
-
-    } else if(solver.validate(puzzleString) === 'invalid characters'){
+    }
+     if(solver.validate(puzzleString) === 'invalid characters'){
       return res.json({ "error": "Invalid characters in puzzle" });
     }
 
@@ -55,4 +73,4 @@ module.exports = function (app) {
   });
 };
 
-//take care of the case when there is no input + invalid coordinate + invalid value
+// If value submitted to /api/check is already placed in puzzle on that coordinate, the returned value will be an object containing a valid property with true if value is not conflicting.

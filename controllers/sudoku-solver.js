@@ -3,6 +3,9 @@ class SudokuSolver {
 
   validate(puzzleString) {
     const regex = /[^\d\.]/g;
+    if(!puzzleString){
+      return "missing puzzle";
+    }
     const puzzleArray = Array.from(puzzleString);
     if(puzzleArray.length !== 81){
       return "not 81";
@@ -16,6 +19,29 @@ class SudokuSolver {
 
   }
 
+  validateCoord(coord){
+    const regex = /^[a-i][1-9]$/i;
+    if(!coord){
+      return 'missing coord';
+    }
+    if(!regex.test(coord)){
+      return 'invalid coord';
+    }
+
+    return 'ok';
+  }
+
+  validateValue(val){
+    const regex = /^[1-9]$/;
+    if(!val){
+      return 'missing value';
+    }
+    if(!regex.test(val)){
+      return 'invalid value';
+    }
+
+    return 'ok';
+  }
 
 
   checkRowPlacement(matrix, row, column, value) {
@@ -83,10 +109,10 @@ class SudokuSolver {
 
     // console.log(rowRaw, colRaw);
     const col = parseInt(colRaw[0]) - 1;
-    const row = rowRaw[0].charCodeAt(0) - 'A'.charCodeAt(0);
+    const row = rowRaw[0].toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0);
 
     // console.log("row col", row, col)
-
+  
     const res = [0,0,0];  //-----[row, column, region]
 
     if(this.checkRowPlacement(matrix, row, col, value) === true){
