@@ -48,7 +48,7 @@ module.exports = function (app) {
           jsonRes['conflict'].push('region');
         }
       }
-      console.log(checkRes, jsonRes);
+      // console.log(checkRes, jsonRes);
       res.json(jsonRes);
     });
     
@@ -70,7 +70,7 @@ module.exports = function (app) {
       return res.json({'error': 'Puzzle cannot be solved'});
     }
 
-    console.log(solverOutput);
+    // console.log(solverOutput);
     res.json({solution: solverOutput});
   });
 };
