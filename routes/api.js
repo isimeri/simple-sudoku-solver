@@ -30,6 +30,9 @@ module.exports = function (app) {
       const checkRes = solver.checkPlacement(puzzleString, coord, val);
       const jsonRes = {"valid": true}
 
+      if(checkRes === "taken"){
+        return res.json({"error": "Cell is taken"});
+      }
       if(checkRes[0] === 0 && checkRes[1] === 0 && checkRes[2] === 0){
          return res.json(jsonRes);
       } else {
@@ -52,24 +55,23 @@ module.exports = function (app) {
   app.post('/api/solve', (req, res) => {
 
     const puzzleString = req.body.puzzle;
-    if(solver.validate(puzzleString) === "missing puzzle"){
+    const solverOutput = solver.solve(puzzleString);
+
+    if(solverOutput === "missing puzzle"){
       return res.json({ "error": "Required field(s) missing" });
     }
-    if(solver.validate(puzzleString) === 'not 81'){
+    if(solverOutput === 'not 81'){
       return res.json({"error": "Expected puzzle to be 81 characters long"});
     }
-     if(solver.validate(puzzleString) === 'invalid characters'){
+     if(solverOutput === 'invalid characters'){
       return res.json({ "error": "Invalid characters in puzzle" });
     }
-
-    const solvedString = solver.solve(puzzleString);
-
-    if(solvedString === 'impossible'){
+    if(solverOutput === 'impossible'){
       return res.json({'error': 'Puzzle cannot be solved'});
     }
 
-    console.log(solvedString);
-    res.json({solution: solvedString});
+    console.log(solverOutput);
+    res.json({solution: solverOutput});
   });
 };
 

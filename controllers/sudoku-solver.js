@@ -46,7 +46,7 @@ class SudokuSolver {
 
   checkRowPlacement(matrix, row, column, value) {
     
-    console.log('row test');
+    // console.log('row test');
     // console.log(matrix);
     for(let i = 0; i<9; i++){
       if(value === matrix[row][i]){
@@ -88,19 +88,7 @@ class SudokuSolver {
 
   checkPlacement(puzzleString, cell, value){
 
-    let matrix = [
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-    ];
-
-    this.strToMatrix(puzzleString, matrix);
+    let matrix = this.strToMatrix(puzzleString);
   
     const numRegex = /\d{1}/i;
     const letterRegex = /\w{1}/i;
@@ -114,6 +102,13 @@ class SudokuSolver {
     // console.log("row col", row, col)
   
     const res = [0,0,0];  //-----[row, column, region]
+    if(matrix[row][col] !== 0){
+      if(matrix[row][col] === value){
+        return res;
+      } else {
+        return "taken";
+      }
+    }
 
     if(this.checkRowPlacement(matrix, row, col, value) === true){
       res[0] = 1;
@@ -128,7 +123,18 @@ class SudokuSolver {
     return res;
   }
 
-  strToMatrix(puzzleString, matrix){
+  strToMatrix(puzzleString){
+    let matrix = [
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+    ];
     let c;
     let str = Array.from(puzzleString)
     for(let i=0;i<9;i++){
@@ -142,25 +148,19 @@ class SudokuSolver {
             }
         }
     }
+    return matrix;
     // return matrix;
 }
 
   solve(puzzleString) {
     
-    let matrix = [
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-    ];
-    let emptyCells = 0;
+    const isValid = this.validate(puzzleString);
+    if(isValid !== "ok"){
+      return isValid;
+    }
 
-    this.strToMatrix(puzzleString, matrix);
+    let emptyCells = 0;
+    let matrix = this.strToMatrix(puzzleString);
 
     for(let i=0;i<9;i++){
       for(let j=0; j<9; j++){
