@@ -1,29 +1,78 @@
-code {
-  background: #d0d0d5;
+:root{
+  --blue1: #8ecae6;
+  --blue2: #219ebc;
+  --blue3: #023047;
+  --orange1: #ffb703;
+  --orange2: #fb8500;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  min-height: 100vh;
+  padding: 5vh 2rem;
+  font-family: sans-serif;
+  background-color: var(--blue3);
+  color: white;
+}
+h1{
+  font-size: 3rem;
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
 }
 
 .form-container {
   max-width: 95%;
   align-self: flex-start;
+  padding-top: calc(3rem + 3px);
+}
+
+#solve-form{
+  margin-bottom: 1.5rem;
 }
 
 textarea {
   width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--blue1);
+  border: none;
 }
 
-#user-stories {
-  font-size: 1.2em;
+#check-form{
+  border: 2px dashed var(--blue1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+input[type="text"]{
+  padding: 0.2rem 0.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  width: 100%;
+  background-color: var(--blue1);
+  border: none;
+}
+.btn{
+  padding: 0.2rem 0.5rem;
+  border: none;
+  background-color: var(--orange2);
+  font-size: 1rem;
+}
+.btn:hover{
+  cursor: pointer;
+  background-color: var(--orange1);
 }
 
-#error-msg {
-  color: red;
-  display: inline;
-  margin-left: 10px;
+code {
+  background: var(--blue2);
+  color: black;
+  padding: 0.2rem;
 }
 
 #sudoku-grid-container {
@@ -38,37 +87,39 @@ textarea {
 }
 
 .grid {
-  border: 3px solid;
+  border: 3px solid var(--blue1);
   border-spacing: 0;
 }
 
 td {
   border: 1px solid;
-  padding: 0.3em;
+  padding: 0.3rem;
 }
 
 .yAxisLegend {
-  margin-top: 50px;
+  margin-top: calc(3rem + 3px);
+  border-collapse: collapse;
   text-align: right;
   font-weight: bold;
 }
 
 .yAxisLegend tr td {
-  border: 1px solid rgba(0,0,0,0);
-  width: 2em;
-  height: 1.95em;
+  border: none;
+  width: 3rem;
+  height: 3rem;
+  padding-right: 0.5rem;
 }
 
 .xAxisLegend {
-  border: 3px solid rgba(0,0,0,0);
+
   border-spacing: 0;
   font-weight: bold;
 }
 
 .xAxisLegend tr td {
   border: 1px solid rgba(0,0,0,0);
-  width: 2em;
-  height: 2em;
+  width: 3rem;
+  height: 3rem;
   text-align: center;
   vertical-align: bottom;
   padding-bottom: 0;
@@ -79,18 +130,18 @@ td {
 }
 
 .sudoku-input {
-  border: 1px solid black;
-  width: 2em;
-  height: 2em;
+  border: 1px solid var(--blue1);
+  width: 3rem;
+  height: 3rem;
   text-align: center;
 }
 
 .C1, .C2, .C3, .C4, .C5, .C6, .C7, .C8, .C9, .F1, .F2, .F3, .F4, .F5, .F6, .F7, .F8, .F9 {
-  border-bottom: 3px solid;
+  border-bottom: 3px solid var(--blue1);
 }
 
 .A3, .B3, .C3, .D3, .E3, .F3, .G3, .H3, .I3, .A6, .B6, .C6, .D6, .E6, .F6, .G6, .H6, .I6 {
-  border-right: 3px solid;
+  border-right: 3px solid var(--blue1);
 }
 
 @media (min-width: 800px) {
@@ -98,7 +149,4 @@ td {
     flex-direction: row;
   }
 
-  .form-container {
-    align-self: center;
-  }
 }
