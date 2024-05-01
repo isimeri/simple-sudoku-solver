@@ -1,9 +1,12 @@
-# Sudoku Solver -- [[live]]()
+# Sudoku Solver -- [[live]](https://simple-sudoku-solver.onrender.com/)
 
 An app that is able to solve simple Sudoku puzzles. It isn't able to solve puzzles that require applying special techniques, like X wing, Y wing, Swordfish and others.
-All it does is look at the row, column and the 3x3 group of each cell and if there's only one potential candidate for that specific cell, then it fills it out.  
-Backend Powered by Node.js and Express.js.  
+All it does is look at the row, column and the 3x3 group of each cell and if there's only one potential candidate for that specific cell, then it fills it out.
+
+Backend powered by Node.js and Express.js.  
 Frontend made with classic HTML, CSS, JS and Fetch API.
+___
+Click [here](https://simple-sudoku-solver.onrender.com/) to check out the live app.
 ___
 ![sudoku solver screenshot](https://i.imgur.com/CGpb4qZ.png)
 
